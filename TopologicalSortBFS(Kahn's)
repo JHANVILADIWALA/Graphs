@@ -1,0 +1,34 @@
+https://practice.geeksforgeeks.org/problems/topological-sort/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=topological-sort
+    
+    //KAHN'S ALGO : BFS with indegree
+    // insert indegree=0 nodes in queue
+    // reduce indegree of neighbours....continue
+	public: 
+	vector<int> topoSort(int n, vector<int> adj[]) 
+	{
+	 //SC : O(N)
+	 //TC : O(V+E) bfs directed graph
+	 int indegree[n]={0};
+	 //getting indegree vector:
+	 for(int i=0;i<n;i++){
+	     for(auto it:adj[i])indegree[it]++;
+	 }
+	 //add initial indegree=0 elements in queue
+	 queue<int>q;
+	 for(int i=0;i<n;i++){
+	     if(indegree[i]==0)q.push(i);
+	 }
+	 vector<int>toposort;
+	 while(!q.empty()){
+	     int node=q.front();
+	     q.pop();
+	     toposort.push_back(node);
+	     //traverse neighbours and decrease indegree by 1
+	     //if indegree becomes 0 then push in queue
+	     for(auto it:adj[node]){
+	         indegree[it]--;
+	         if(indegree[it]==0)q.push(it);
+	     }
+	 }
+	 return toposort;
+	}

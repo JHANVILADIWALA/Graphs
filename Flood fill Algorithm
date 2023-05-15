@@ -1,0 +1,56 @@
+https://practice.geeksforgeeks.org/problems/flood-fill-algorithm1856/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=flood-fill-algorithm
+
+private:
+    void bfs(vector<vector<int>>& image,int sr,int sc,int newColor,vector<vector<int>>vis  ){
+        vis[sr][sc]=1;
+        int n= image.size();
+       int m= image[0].size();
+        //image[sr][sc]=newColor;
+        queue<pair<int,int>>q;
+        q.push({sr,sc});
+        while(!q.empty()){
+            int row=q.front().first;
+            int col=q.front().second;
+            q.pop();
+            int origclr=image[row][col];
+            //traverse through its neighbours
+            int tempr=row-1;
+            int tempc=col;
+ if(tempr>=0 && tempr<n && tempc>=0 && tempc<m && !vis[tempr][tempc] && image[tempr][tempc]==origclr ){
+     q.push({tempr,tempc});
+    // bfs(image,tempr,tempc,newColor,vis);
+ }
+             tempr=row+1;
+             tempc=col;
+ if(tempr>=0 && tempr<n && tempc>=0 && tempc<m && !vis[tempr][tempc] && image[tempr][tempc]==origclr ){
+     q.push({tempr,tempc});
+     //bfs(image,tempr,tempc,newColor,vis);
+ }
+ 
+             tempr=row;
+             tempc=col-1;
+ if(tempr>=0 && tempr<n && tempc>=0 && tempc<m && !vis[tempr][tempc] && image[tempr][tempc]==origclr ){
+     q.push({tempr,tempc});
+    // bfs(image,tempr,tempc,newColor,vis);
+ }
+ 
+                tempr=row;
+                tempc=col+1;
+ if(tempr>=0 && tempr<n && tempc>=0 && tempc<m && !vis[tempr][tempc] && image[tempr][tempc]==origclr ){
+    q.push({tempr,tempc});
+    // bfs(image,tempr,tempc,newColor,vis);
+ }  
+       image[row][col]=newColor;
+         vis[row][col]=1;
+        }
+    }
+public:
+    
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+       int n= image.size();
+       int m= image[0].size();
+       vector<vector<int>>vis(n,vector<int>(m,0));
+        bfs(image,sr,sc,newColor,vis);
+       return image;
+       
+    }

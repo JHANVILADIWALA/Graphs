@@ -1,0 +1,37 @@
+https://practice.geeksforgeeks.org/problems/number-of-provinces/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=number_of_provinces
+
+private:
+    void dfs(int node, vector<int>adjls[], int vis[] ){
+        vis[node]=1;
+        for(auto it:adjls[node]){
+            if(!vis[it]){
+                dfs(it , adjls , vis);
+            }
+        }
+    }
+  public:
+    int numProvinces(vector<vector<int>> adj, int n) {
+        vector<int>adjls[n];
+        //converting adj mmatrix to list
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(adj[i][j]==1){
+                    adjls[i].push_back(j);
+                    adjls[j].push_back(i);
+                }
+            }
+        }
+        //code
+        //kisi bhi node ki dfs traversal se pura 
+        //connected graph cover hojata h
+        //so jitne mile jo covered ni the they mean diffrent province
+        int ckt=0;
+        int vis[n]={0};
+        for(int i=0;i<n;i++){
+            if(!vis[i]){
+               ckt++;
+               dfs( i , adjls , vis);
+            }
+        }
+        return ckt;
+    }

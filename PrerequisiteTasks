@@ -1,0 +1,47 @@
+https://practice.geeksforgeeks.org/problems/prerequisite-tasks/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=prerequisite-tasks
+
+public:
+
+    //    2 methods to solve:
+    // 1. dfs ... check cycle present or not
+    // 2. bfs ... check topologicalsort possible or not
+	bool isPossible(int n, vector<pair<int, int> >& prerequisites) {
+	    
+	    //creating adjacency list
+	    vector<int>adj[n];
+	    for(auto it:prerequisites){
+	        adj[it.first].push_back(it.second);
+	    }
+	    
+	    //check toposort
+	    
+	    int indegree[n]={0};
+	    
+	 //getting indegree vector:
+	 for(int i=0;i<n;i++){
+	     for(auto it:adj[i])indegree[it]++;
+	 }
+	 
+	 //add initial indegree=0 elements in queue
+	 queue<int>q;
+	 for(int i=0;i<n;i++){
+	     if(indegree[i]==0)q.push(i);
+	 }
+	 
+	 vector<int>toposort;
+	 while(!q.empty()){
+	     int node=q.front();
+	     q.pop();
+	     toposort.push_back(node);
+	     //traverse neighbours and decrease indegree by 1
+	     //if indegree becomes 0 then push in queue
+	     for(auto it:adj[node]){
+	         indegree[it]--;
+	         if(indegree[it]==0)q.push(it);
+	     }
+	 }
+	 
+	 //if cycle present (size<n) then not possible
+	 if(toposort.size()==n)return true;
+     else return false;
+	}

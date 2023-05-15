@@ -1,0 +1,54 @@
+https://practice.geeksforgeeks.org/problems/find-the-number-of-islands/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=find_the_number_of_islands
+
+//int vis[500][500]={0};
+    
+  void bfs(vector<vector<int>>&vis, int row, int col , vector<vector<char>>& grid){
+      queue<pair<int,int>>q;
+      int n=grid.size();
+      int m=grid[0].size();
+      q.push({row,col});
+      vis[row][col]=1;
+      while(!q.empty()){
+           int row=q.front().first;
+           int col=q.front().second;
+           q.pop();
+           //travrse neighbours 
+           //shortcut instead of writing  times
+           for(int delrow=-1;delrow<=1;delrow++){
+               for(int delcol=-1;delcol<=1;delcol++){
+                   
+                   int neighrow=row+delrow;
+                   int neighcol=col+delcol;
+                   
+    if(neighrow>=0 && neighrow<n && neighcol>=0 && neighcol<m 
+    && grid[neighrow][neighcol]=='1' &&
+    vis[neighrow][neighcol]==0) {
+        
+        q.push({neighrow,neighcol});
+        vis[neighrow][neighcol]=1;
+        
+                }
+            }
+           }
+      }
+      
+  }
+  public:
+    
+    int numIslands(vector<vector<char>>& grid) {
+        
+        int n=grid.size();
+        int m=grid[0].size();
+        int ckt=0;
+        vector<vector<int>>vis(n,vector<int>(m,0));
+        for(int i=0;i<n;i++){
+            for(int j=0 ;j<m;j++){
+                if(!vis[i][j] && grid[i][j]=='1'){
+                    ckt++;
+                    bfs(vis,i,j,grid);
+                    
+                }
+            }
+        }
+        return ckt;
+    }

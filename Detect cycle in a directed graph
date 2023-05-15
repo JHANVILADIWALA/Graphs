@@ -1,0 +1,43 @@
+https://practice.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=detect-cycle-in-a-directed-graph
+
+private:
+  bool dfscheck(int node, vector<int> adj[], int vis[],int pathvis[]  ){
+      //visit and pathvisit that node
+      vis[node]=1;
+      pathvis[node]=1;
+      //traverse neighbours
+      for(auto it:adj[node]){
+          //not visited then call dfs
+          if(!vis[it]){
+              if(dfscheck(it,adj,vis,pathvis)==true)return true;
+          }
+          //visited and path visited
+          else if(vis[it] && pathvis[it]){
+              return true;
+          }
+      }
+      //remove from pathvis while going back
+      pathvis[node]=0;
+      return false;
+  }
+  public:
+    bool isCyclic(int V, vector<int> adj[]) {
+        //visit that node on same path again
+        //visit and path visit while going
+        //unvisit in path while coming back
+        
+        //TC = O (V+E) every node will have single edge
+        //SC=  O (2*N ) two array vis and pathvis
+        //visited and pathvis array
+       int vis[V]={0};
+       int pathvis[V]={0};
+       
+       //traverse all nodes
+       for(int i=0;i<V;i++){
+           if(!vis[i]){ //if not visited then call dfscheck
+               //if check found true means we found cycle
+               if(dfscheck(i,adj,vis,pathvis)==true)return true;
+           }
+       }
+       return false;
+    }

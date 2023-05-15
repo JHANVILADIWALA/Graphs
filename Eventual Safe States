@@ -1,0 +1,46 @@
+https://practice.geeksforgeeks.org/problems/eventual-safe-states/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=eventual-safe-states
+
+private:
+    //SC = Same as dfs
+   bool dfs( int node,int vis[],int pathvis[],vector<int>adj[],int check[] ){
+        //unvisit pathvis only if found no cycle
+        vis[node]=1;
+        pathvis[node]=1;
+        check[node]=0;
+        //traverse adjacent nodes
+        for(auto it:adj[node]){
+            if(!vis[it]){
+                if(dfs(it,vis,pathvis,adj,check)==true) {// cycle present
+                 check[node]=0;
+                  return true;
+                }
+            }
+            else if(vis[it] && pathvis[it]){
+                check[node]=0;
+                return true;
+            }
+        }
+        //reaches here means no cycle
+        check[node]=1;
+        pathvis[node]=0;
+        return false;
+    }
+  public:
+    vector<int> eventualSafeNodes(int n, vector<int> adj[]) {
+         //DFS
+         //anyone who is a part of cycle can never be safe
+         //those which are incoming to cycle can never be safe
+         vector<int>safenodes;
+        int vis[n]={0};
+        int pathvis[n]={0};
+        int check[n]={0};
+         for(int i=0;i<n;i++){
+             if(!vis[i]){
+                 dfs(i,vis,pathvis,adj,check);
+             }
+         }
+         for(int i=0;i<n;i++){
+             if(check[i]==1)safenodes.push_back(i);
+         }
+         return safenodes;
+    }

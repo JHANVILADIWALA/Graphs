@@ -1,0 +1,53 @@
+https://practice.geeksforgeeks.org/problems/eventual-safe-states/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=eventual-safe-states
+
+public:
+     //TC : O(V+E);
+     //SC : for adjacency list,indegree,queue
+    vector<int> eventualSafeNodes(int n, vector<int> adj[]) {
+        //USING TOPOSORT
+        //reverse all the edges
+        //get all node with indegree 0
+        
+        //reverse edges
+        vector<int>adjrev[n];
+        for(int i=0;i<n;i++){
+            for(auto it:adj[i]){
+                adjrev[it].push_back(i);
+            }
+        }
+        
+        int indegree[n]={0};
+        queue<int>q;
+        
+        //getting indegree
+        for(int i=0;i<n;i++){
+            for(auto it:adjrev[i]){
+                indegree[it]++;
+            }
+        }
+        
+        //put in q with indegree 0
+        for(int i=0;i<n;i++){
+            if(indegree[i]==0){
+                q.push(i);
+            }
+        }
+        
+        vector<int>toposort;
+        //traverse queue
+        while(!q.empty()){
+            int node=q.front();
+            q.pop();
+            toposort.push_back(node);
+            //traverse its neighbours and indgree--
+            for(auto it:adjrev[node]){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q.push(it);
+                }
+            }
+            
+        }
+        sort(toposort.begin(),toposort.end());
+        return toposort;
+    }

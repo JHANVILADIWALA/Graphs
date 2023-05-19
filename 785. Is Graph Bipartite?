@@ -1,0 +1,30 @@
+https://leetcode.com/problems/is-graph-bipartite/description/
+
+private:
+    bool dfs(int node,int col,int color[],vector<vector<int>>&adj){
+        color[node]=col;
+        //neighbours
+        for(auto it:adj[node]){
+            if(color[it]==color[node])return false; //2 adj nodes have same clr
+            else if(color[it]==-1){//if not colored..then color it
+              if(dfs(it,!col,color,adj)==false)return false;//we went to color but found adj nodes same clr
+            }
+        }
+        return true;
+    }
+public:
+    bool isBipartite(vector<vector<int>>& adj) {
+        int n=adj.size();
+        //make color vector and initialise to -1
+        int color[n];
+	     for(int i=0;i<n;i++)color[i]=-1;
+        //call dfs
+        for(int i=0;i<n;i++){//call for all vertices
+         if(color[i]==-1){//not colored
+            //then call dfs and if dfs says not bipartite
+            if(dfs(i ,0,color,adj )==false)return false;
+         }
+        }
+        //else return true if no case found for non bipartite
+        return true;
+    }

@@ -1,0 +1,65 @@
+https://leetcode.com/problems/evaluate-division/description/
+
+private: //making graph /////////////// function 1 //////////////
+
+        unordered_map< string, unordered_map<string,double> > graph(const vector<vector<string>>& equations ,  vector<double>& values ){
+
+            //storing the equations var in graph
+            unordered_map< string, unordered_map<string,double> > gr;
+
+            for(int i=0;i<equations.size();i++){
+                string num = equations[i][0];
+                string deno = equations[i][1];
+                double value = values[i];
+                
+                //directed graph
+                gr[num][deno] = value;
+                gr[deno][num] = 1.0/value;
+
+            }
+            return gr;
+        }
+
+        //dfs fn /////////////////////// function 2 //////////////////
+        void dfs(string node,string&dest,unordered_map< string, unordered_map<string,double> > &gr, unordered_set < string > &vis, double&ans ,double temp){
+            if(vis.find(node) != vis.end())return; //if already vis
+            vis.insert(node);
+            if(node==dest){
+                ans=temp;
+                return;
+            }
+            for(auto neighbour : gr[node] ){
+                dfs(neighbour.first, dest , gr , vis, ans, temp*neighbour.second );
+            }
+        }
+
+/////////////////////////////////////////////////////////////////////////////////////
+public:
+        vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+            //storing graph in map
+            //for every node a separate map with with that node is connected along with wt
+            //making graph:
+            unordered_map< string, unordered_map<string,double> > gr = graph(equations,values);
+
+           //by now we got the graph in map
+           vector<double>finans; // we will return this
+
+           //now traverse on queries
+           for(auto query:queries){
+                string num = query[0];
+                string deno = query[1];
+                
+
+                //if any of num or deno is not present return -1
+                if( gr.find(num)==gr.end() || gr.find(deno)==gr.end()){
+                    finans.push_back(-1.0);
+                }
+                else{ //both are there => call dfs
+                   unordered_set < string > vis;
+                   double ans=-1 , temp=1.0;
+                   dfs(num,deno,gr,vis,ans,temp); //if reach deno then update ans with temp
+                   finans.push_back(ans);
+                }
+           }
+           return finans;
+        }

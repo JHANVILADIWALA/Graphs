@@ -1,0 +1,39 @@
+https://practice.geeksforgeeks.org/problems/word-ladder/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=word-ladder
+
+public:
+    int wordLadderLength(string startWord, string targetWord, vector<string>& wordList) {
+        
+        queue<pair<string,int>>q;  // word , level
+        //for all possibilities of that string check
+        //add all possibilities present in wordlist to q
+        
+        q.push({startWord,1});
+        
+        //store in set for faster access
+        unordered_set<string>st(wordList.begin(),wordList.end());
+        
+        //erase the visited element from set
+        st.erase(startWord);
+        
+        while(!q.empty()){
+            string word=q.front().first;
+            int steps=q.front().second;
+            q.pop();
+            
+            if(word==targetWord)return steps; //at any point i found target
+            
+            // change every char of word
+            for(int i=0;i<word.size();i++){
+                char original=word[i]; //check  poss for ith char
+                for(char ch='a';ch<='z';ch++){
+                    word[i]=ch;
+                    if(st.find(word)!=st.end()){//found
+                      st.erase(word);
+                      q.push({word,steps+1});
+                    }
+                }
+                word[i]=original;
+            }
+        }
+        return 0;
+    }

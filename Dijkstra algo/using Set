@@ -1,0 +1,33 @@
+https://practice.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=implementing-dijkstra-set-1-adjacency-matrix
+
+public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int n, vector<vector<int>> adj[], int s)
+    {
+        //USING SET 
+        set<pair<int,int>>st;
+        st.insert({0,s});
+        
+        //distance vector
+        vector<int>dist(n,1e9);
+        dist[s]=0;
+        
+        while(!st.empty()){
+            auto it= *(st.begin()) ; //value at bginning of set
+            int dis=it.first;
+            int node=it.second;
+            st.erase(it);
+            
+            for(auto it1:adj[node]){
+                int adjnode=it1[0];
+                int adjdist=it1[1];
+                if(dist[adjnode]>dis+adjdist){
+                    if(dist[adjnode]!=1e9)st.erase({dist[adjnode],adjnode});
+                    dist[adjnode]=dis+adjdist;
+                    st.insert({dist[adjnode],adjnode});
+                }
+            }
+        }
+        return dist;
+    }

@@ -1,0 +1,40 @@
+https://practice.geeksforgeeks.org/problems/implementing-dijkstra-set-1-adjacency-matrix/1?utm_source=youtube&utm_medium=collab_striver_ytdescription&utm_campaign=implementing-dijkstra-set-1-adjacency-matrix
+
+public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int n, vector<vector<int>> adj[], int s)
+    {
+        //dijkstra can't have neg wt becz it will fall into INFINITE WEIGHT
+        // O(E logV)
+        
+        //USING PRIORITY QUEUE 
+        vector<int>dist(n);
+        for(int i=0;i<n;i++)dist[i]=1e9;
+        dist[s]=0;
+        
+        //min heap or priority queue : {dist , node}
+        priority_queue< pair<int,int> ,vector<pair<int,int>> ,greater<pair<int,int>> >pq;
+                        // type .......vector<type>...........comparison
+        
+        pq.push({0,s});
+        
+        while(!pq.empty()){
+            int currdis= pq.top().first;
+            int currnode= pq.top().second;
+            pq.pop();
+            
+            for(auto it:adj[currnode]){
+                int adjnode=it[0];
+                int edgewt=it[1];
+                
+                //relaxation
+                if(dist[adjnode]>currdis+edgewt){
+                    dist[adjnode]=currdis+edgewt;
+                    pq.push({ dist[adjnode] , adjnode });
+                }
+            }
+        }
+        return dist;
+        
+    }
